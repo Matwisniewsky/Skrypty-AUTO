@@ -1,0 +1,13 @@
+function copySheets() {
+  var spreadsheetId = "11leGyMOcpGonc-f8D9jW1rPZ5FUbpkTYYeV4rbEZZao"; /tutaj należy wkleić spreadsheetId/
+  var spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+  var sheets = spreadsheet.getSheets();
+  var destination = SpreadsheetApp.create(spreadsheet.getName() + " (Values Only)");
+
+  sheets.forEach(function(sheet) {
+    var source = sheet.getDataRange();
+    var values = source.getValues();
+    var destinationSheet = destination.insertSheet(sheet.getName());
+    destinationSheet.getRange(source.getA1Notation()).setValues(values);
+  });
+}
