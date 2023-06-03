@@ -1,5 +1,5 @@
 function copySheets() {
-  var spreadsheetId = "11leGyMOcpGonc-f8D9jW1rPZ5FUbpkTYYeV4rbEZZao"; /tutaj należy wkleić spreadsheetId/
+  var spreadsheetId = "11leGyMOcpGonc-f8D9jW1rPZ5FUbpkTYYeV4rbEZZao"; //tutaj należy wkleić spreadsheetId
   var spreadsheet = SpreadsheetApp.openById(spreadsheetId);
   var sheets = spreadsheet.getSheets();
   var destination = SpreadsheetApp.create(spreadsheet.getName() + " (Values Only)");
