@@ -1,0 +1,56 @@
+function analyzeData() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheets = spreadsheet.getSheets();
+
+  // Przetwarzanie każdej zakładki arkusza
+  for (var i = 0; i < sheets.length; i++) {
+    var sheet = sheets[i];
+    var lastRow = sheet.getLastRow();
+    var dataRange = sheet.getRange("A1:K" + lastRow);
+    var data = dataRange.getValues();
+    var outputData = {};
+
+    // Przetwarzanie danych w kolumnach A:K
+    for (var row = 1; row < data.length; row++) {
+      var rowData = data[row];
+      var key = rowData[3] + "-" + rowData[4]; // Klucz unikalny dla wiersza (kolumna D i E)
+      var valueH = rowData[7]; // Wartość w kolumnie H
+      var valueI = rowData[8]; // Wartość w kolumnie I
+
+      // Sumowanie wartości H i I dla unikalnego klucza
+      if (outputData[key]) {
+        outputData[key][3] += valueH;
+        outputData[key][4] += valueI;
+      } else {
+        var outputRow = [rowData[3], rowData[4], rowData[6], valueH, valueI];
+        outputData[key] = outputRow;
+      }
+    }
+
+    // Tworzenie tablicy danych wyjściowych
+    var outputArray = [];
+    for (var key in outputData) {
+      var outputRow = outputData[key];
+      var maxVal = Math.max(outputRow[3], outputRow[4]);
+      if (maxVal === outputRow[4]) {
+        outputRow[3] = maxVal + " URL";
+      } else {
+        outputRow[3] = maxVal;
+      }
+      outputArray.push(outputRow.slice(0, 4));
+    }
+
+    // Sortowanie danych wyjściowych po kolumnach D i E
+    outputArray.sort(function(a, b) {
+      if (a[0] === b[0]) {
+        return a[1] - b[1];
+      } else {
+        return a[0] - b[0];
+      }
+    });
+
+    // Umieszczanie danych wyjściowych w kolumnach L, M, N, O
+    var outputRange = sheet.getRange("L2:O" + (outputArray.length + 1));
+    outputRange.setValues(outputArray);
+  }
+}
