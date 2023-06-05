@@ -1,5 +1,6 @@
 function analyzeData() {
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var spreadsheetId = "1le7wHKVXHnI_r02OJ5EEOvMHzMDUWSChYo97OJMvLOM"; // Zmień na żądane ID arkusza
+  var spreadsheet = SpreadsheetApp.openById(spreadsheetId); // Otwieranie arkusza na podstawie ID
   var sheets = spreadsheet.getSheets();
 
   // Przetwarzanie każdej zakładki arkusza
@@ -50,7 +51,9 @@ function analyzeData() {
     });
 
     // Umieszczanie danych wyjściowych w kolumnach L, M, N, O
-    var outputRange = sheet.getRange("L2:O" + (outputArray.length + 1));
-    outputRange.setValues(outputArray);
+    if (outputArray.length > 0) {
+      var outputRange = sheet.getRange("L2:O" + (outputArray.length + 1));
+      outputRange.setValues(outputArray);
+    }
   }
 }
